@@ -1,0 +1,222 @@
+<!DOCTYPE html>  
+  
+<html xmlns="http://www.w3.org/1999/xhtml">  
+<head runat="server">  
+    <title></title>  
+    <!--[if lte IE 8]>  
+         document.write("NOT HTML5 Compatible!!");  
+    <![endif]-->  
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/app.css"/>
+</head>  
+<body ng-app="Contacts">  
+  
+    <div class="container" ng-controller="ContactsController">       
+        
+    <div class="row">
+        <div class="col-md-12">
+            <div class="lead"> <h3 class="app-title">{{ appTitle }}</h3>  <strong>{{ appHeadline }}</strong></div>
+        </div>        
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-primary" data-ng-click="toggleAdd()" data-ng-hide="addMode || !(permissions.create)">
+                <i class="glyphicon glyphicon-plus"></i>&nbsp;Add Contact
+            </button>
+        </div>       
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger" ng-show="error != null">
+                <button class="close" data-close="alert"></button>
+                <span>
+                    <strong class="error">{{ error }}</strong>
+                </span>
+            </div>
+        </div>
+    </div>
+      <div class="row">
+        <div class="col-md-12">
+        <form data-ng-show="addMode" id="addForm" name="addForm" class="form-horizontal"> 
+                    <div class="form-group">
+        <label for="type" class="control-label col-xs-2">Type</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" id="type" name="type" ng-model="type" placeholder="type" required>
+        </div>
+    </div>
+                         <div class="form-group">
+        <label for="name" class="control-label col-xs-2">Name</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" id="name" name="name" ng-model="name" placeholder="name">
+        </div>
+    </div>
+            
+             <div class="form-group">
+        <label for="title" class="control-label col-xs-2">Title</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" id="title" name="title" ng-model="title" placeholder="title">
+        </div>
+    </div>
+            
+             <div class="form-group">
+        <label for="phone" class="control-label col-xs-2">Phone</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" id="phone" name="phone" ng-model="phone" placeholder="phone">
+        </div>
+    </div>
+            
+             <div class="form-group">
+        <label for="ext" class="control-label col-xs-2">Ext</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" id="ext" name="ext" ng-model="ext" placeholder="ext">
+        </div>
+    </div>
+            
+             <div class="form-group">
+        <label for="fax" class="control-label col-xs-2">Fax</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" id="fax" name="fax" ng-model="fax" placeholder="fax">
+        </div>
+    </div>
+
+             <div class="form-group">
+        <label for="email" class="control-label col-xs-2">Email</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" id="email" name="email" ng-model="email" placeholder="email">
+        </div>
+    </div>
+            
+            <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-10">
+            
+                                <button type="submit" class="btn btn-large btn-success" data-ng-click="add()" data-ng-disabled="addForm.$invalid">
+                        <i class="glyphicon glyphicon-save"></i>&nbsp;Save Contact
+                    </button>
+                    <button type="button" class="btn btn-large" data-ng-click="toggleAdd()">
+                        <i class="glyphicon glyphicon-warning-sign"></i>&nbsp;Cancel
+                    </button>
+        </div>
+    </div>
+
+        </form>  
+          </div>
+        </div>
+        <div class="row"><div class="col-md-12">
+             <form id="editForm" name="editForm" class="form-horizontal" data-ng-show="contact.editMode && !addMode">
+                  <div class="form-group">
+        <label for="type" class="control-label col-xs-2">Type</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" id="type" name="type" data-ng-show="contact.editMode" data-ng-model="contact.type" placeholder="type" required>
+        </div>
+    </div>
+                         <div class="form-group">
+        <label for="name" class="control-label col-xs-2">Name</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" id="name" name="name" data-ng-show="contact.editMode" data-ng-model="contact.name" placeholder="name">
+        </div>
+    </div>
+            
+             <div class="form-group">
+        <label for="title" class="control-label col-xs-2">Title</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" id="title" name="title" data-ng-show="contact.editMode" data-ng-model="contact.title" placeholder="title">
+        </div>
+    </div>
+            
+             <div class="form-group">
+        <label for="phone" class="control-label col-xs-2">Phone</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" id="phone" name="phone" data-ng-show="contact.editMode" data-ng-model="contact.phone" placeholder="phone">
+        </div>
+    </div>
+            
+             <div class="form-group">
+        <label for="ext" class="control-label col-xs-2">Ext</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" id="ext" name="ext" data-ng-show="contact.editMode" data-ng-model="contact.ext" placeholder="ext">
+        </div>
+    </div>
+            
+             <div class="form-group">
+        <label for="fax" class="control-label col-xs-2">Fax</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" id="fax" name="fax" data-ng-show="contact.editMode" data-ng-model="contact.fax" placeholder="fax">
+        </div>
+    </div>
+
+             <div class="form-group">
+        <label for="email" class="control-label col-xs-2">Email</label>
+        <div class="col-xs-10">
+            <input type="text" class="form-control" id="email" name="email" data-ng-show="contact.editMode" data-ng-model="contact.email" placeholder="email">
+        </div>
+    </div>
+            
+            <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-10">
+            
+                                <button type="submit" class="btn btn-large btn-success"  data-ng-click="save(contact)" data-ng-show="contact.editMode" data-ng-disabled="!editForm.$valid" data-ng-disabled="addForm.$invalid">
+                        <i class="glyphicon glyphicon-save"></i>&nbsp;Save Contact
+                    </button>
+                    <button type="button" class="btn btn-large" data-ng-click="cancelEdit(contact)" data-ng-show="contact.editMode">
+                        <i class="glyphicon glyphicon-warning-sign"></i>&nbsp;Cancel
+                    </button>
+        </div>
+    </div>
+            </form>
+            </div></div>
+        <div class="table-responsive">
+            <table class="table table-striped">  
+                <thead>
+                <tr>  
+                   <th></th> 
+                    <th></th>
+                    <th>Type</th>  
+                    <th>Name</th>  
+                    <th>Title</th>  
+                    <th>Phone</th>
+                    <th>Ext.</th>
+                    <th>Fax</th>
+                    <th>Email</th>
+                </tr>  
+                    </thead>
+                <tbody>
+                <tr ng-repeat="contact in contacts" ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}">  
+                                                                <td data-label="#">
+                            <button type="submit" class="btn btn-sm"
+                                    data-ng-hide="contact.editMode || !(permissions.createoredit || permissions.edit)" data-ng-click="toggleEdit(contact)">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </button>
+                            <button type="submit" class="btn btn-sm"
+                                    data-ng-hide="contact.editMode || !(permissions.delete)" data-ng-click="deleteContact(contact)">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>
+                        </td>
+                    <td><input type="checkbox" name="checked" id="checked" ng-model="contact.checked"></td>
+                    <td>{{ contact.type }}  
+                    </td>  
+                    <td>{{ contact.name }}  
+                    </td>  
+                    <td>{{ contact.title }}  
+                    </td>   
+                                        <td>{{ contact.phone }}  
+                    </td>
+                                        <td>{{ contact.ext }}  
+                    </td>  
+                                        <td>{{ contact.fax }}  
+                    </td>  
+                                        <td>{{ contact.email }}  
+                    </td>  
+                </tr>  
+                </tbody>
+                <tfoot> <tr><th colspan="8"><div>Total Contacts : {{count}}</div> </th></tr>        
+         </div>  </tfoot>
+            </table>  
+        </div>
+    <script type="text/javascript" src="lib/angular.min.js"></script>  
+    <script type="text/javascript" src="lib/angular-animate.min.js"></script>  
+    <script type="text/javascript" src="js/app.js">  
+         <script type="text/javascript" src="lib/angular-animate.min.js"></script>  
+    </script>    
+</body>  
+</html>  
